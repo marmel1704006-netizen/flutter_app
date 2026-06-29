@@ -2,9 +2,11 @@ import 'dart:math';
 import '../models/category.dart';
 import '../models/mock_data.dart';
 import '../models/product.dart';
+import '../models/section.dart';
 
 typedef ProductResult = (List<Product>, String?);
 typedef CategoryResult = (List<ProductCategory>, String?);
+typedef SectionResult = (List<ProductSection>, String?);
 
 class ProductRepository {
   final Random _random = Random();
@@ -19,9 +21,14 @@ class ProductRepository {
     return (MockData.products, null);
   }
 
-  // ✅ Окремий метод для категорій — як і буде на реальному API
   Future<CategoryResult> fetchCategories() async {
     await Future.delayed(const Duration(milliseconds: 300));
     return (MockData.categories, null);
+  }
+
+  // секції запит до бекенду
+  Future<SectionResult> fetchSections() async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    return (MockData.sections, null);
   }
 }

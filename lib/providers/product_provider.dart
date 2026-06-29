@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../models/product.dart';
+import '../models/section.dart';
 import '../repositories/product_repository.dart';
 
 enum LoadingStatus { initial, loading, loaded, error }
@@ -10,12 +11,14 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> _products = [];
   List<ProductCategory> _categories = [];
+  List<ProductSection> _sections = [];
   int _selectedCategoryId = 0;
   LoadingStatus _status = LoadingStatus.initial;
   String? _errorMessage;
 
   List<Product> get products => _products;
   List<ProductCategory> get categories => _categories;
+  List<ProductSection> get sections => _sections;
   int get selectedCategoryId => _selectedCategoryId;
   LoadingStatus get status => _status;
   String? get errorMessage => _errorMessage;
@@ -33,13 +36,15 @@ class ProductProvider with ChangeNotifier {
     try {
       final (categories, categoryError) = await _repository.fetchCategories();
       final (products, productError) = await _repository.fetchProducts();
+      final (sections, sectionError) = await _repository.fetchSections();
 
-      if (productError != null || categoryError != null) {
+      if (productError != null || categoryError != null || sectionError != null) {
         _status = LoadingStatus.error;
-        _errorMessage = productError ?? categoryError;
+        _errorMessage = productError ?? categoryError ?? sectionError;
       } else {
         _categories = categories;
         _products = products;
+        _sections = sections;
         _status = LoadingStatus.loaded;
       }
     } catch (e) {

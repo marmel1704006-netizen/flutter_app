@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
+import '../models/product.dart';
+import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/wishlist_provider.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/product_card.dart';
+import 'search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,7 +32,25 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: AppColors.textDark),
-            onPressed: () {},
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider.value(
+                      value: Provider.of<ProductProvider>(context, listen: false),
+                    ),
+                    ChangeNotifierProvider.value(
+                      value: Provider.of<CartProvider>(context, listen: false),
+                    ),
+                    ChangeNotifierProvider.value(
+                      value: Provider.of<WishlistProvider>(context, listen: false),
+                    ),
+                  ],
+                  child: const SearchScreen(),
+                ),
+              ),
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.notifications_none, color: AppColors.textDark),
@@ -98,18 +120,27 @@ class HomeScreen extends StatelessWidget {
               ),
               _buildCategories(productProvider),
               const SizedBox(height: 12),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Тренди тижня',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
+              ...productProvider.sections.map(
+                    (section) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Text(
+                        section.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                    ),
+                    _buildSectionGrid(section.products),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
-              _buildProductGrid(productProvider),
             ],
           ),
         );
@@ -161,7 +192,6 @@ class HomeScreen extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        // ✅ Цикл по динамічних категоріях — більше ніяких захардкоджених значень
         itemCount: productProvider.categories.length,
         itemBuilder: (context, index) {
           final category = productProvider.categories[index];
@@ -175,32 +205,29 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductGrid(ProductProvider productProvider) {
-    if (productProvider.filteredProducts.isEmpty) {
+  Widget _buildSectionGrid(List<Product> products) {
+    if (products.isEmpty) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(32.0),
-          child: Text('Товарів у цій категорії поки немає'),
+          child: Text('Товарів поки немає'),
         ),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: productProvider.filteredProducts.length,
+        itemCount: products.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.65,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),
-        itemBuilder: (context, index) {
-          final product = productProvider.filteredProducts[index];
-          return ProductCard(product: product);
-        },
+        itemBuilder: (context, index) => ProductCard(product: products[index]),
       ),
     );
   }

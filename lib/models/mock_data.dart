@@ -1,8 +1,8 @@
-import 'product.dart';
 import 'category.dart';
+import 'product.dart';
+import 'section.dart';
 
 class MockData {
-  // ✅ Категорії теж у моках — прийдуть з бекенду в майбутньому
   static const List<ProductCategory> categories = [
     ProductCategory(id: 0, name: 'Всі товари'),
     ProductCategory(id: 1, name: 'Догляд за шкірою'),
@@ -34,6 +34,34 @@ class MockData {
       categoryName: 'Парфуми',
       imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500&q=80',
       price: 950,
+    ),
+    Product(
+      id: '4',
+      name: 'Сонцезахисний крем SPF 50',
+      categoryId: 1,
+      categoryName: 'Догляд за шкірою',
+      imageUrl: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=500&q=80',
+      price: 380,
+    ),
+    Product(
+      id: '5',
+      name: 'Палетка тіней Nude',
+      categoryId: 2,
+      categoryName: 'Макіяж',
+      imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500&q=80',
+      price: 680,
+    ),
+  ];
+
+  // секції формуються з даних
+  static List<ProductSection> get sections => [
+    ProductSection(
+      title: 'Тренди тижня',
+      products: products.where((p) => ['1', '2', '3'].contains(p.id)).toList(),
+    ),
+    ProductSection(
+      title: 'Найкраща пропозиція',
+      products: products.where((p) => ['4', '5'].contains(p.id)).toList(),
     ),
   ];
 }
