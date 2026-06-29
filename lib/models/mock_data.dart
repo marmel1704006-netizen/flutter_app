@@ -1,6 +1,15 @@
 import 'product.dart';
+import 'category.dart';
 
 class MockData {
+  // ✅ Категорії теж у моках — прийдуть з бекенду в майбутньому
+  static const List<ProductCategory> categories = [
+    ProductCategory(id: 0, name: 'Всі товари'),
+    ProductCategory(id: 1, name: 'Догляд за шкірою'),
+    ProductCategory(id: 2, name: 'Макіяж'),
+    ProductCategory(id: 3, name: 'Парфуми'),
+  ];
+
   static const List<Product> products = [
     Product(
       id: '1',

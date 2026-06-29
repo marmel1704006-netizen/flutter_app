@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../models/product.dart';
-import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/wishlist_provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -11,9 +12,10 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
-    final isFavorite = productProvider.isFavorite(product.id);
-    final isInCart = productProvider.isInCart(product.id);
+    final wishlistProvider = Provider.of<WishlistProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final isFavorite = wishlistProvider.isFavorite(product.id);
+    final isInCart = cartProvider.isInCart(product.id);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -30,7 +32,7 @@ class ProductDetailScreen extends StatelessWidget {
               isFavorite ? Icons.favorite : Icons.favorite_border,
               color: isFavorite ? Colors.red : AppColors.textDark,
             ),
-            onPressed: () => productProvider.toggleFavorite(product.id),
+            onPressed: () => wishlistProvider.toggleFavorite(product.id),
           ),
         ],
       ),
@@ -48,7 +50,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -64,7 +65,6 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-
                   Text(
                     product.name,
                     style: const TextStyle(
@@ -74,7 +74,6 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,16 +87,21 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isInCart ? Colors.green : AppColors.primary,
+                          backgroundColor:
+                          isInCart ? Colors.green : AppColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                         ),
-
-                        onPressed: () => productProvider.toggleCart(product.id),
+                        onPressed: () => isInCart
+                            ? cartProvider.removeFromCart(product.id)
+                            : cartProvider.addToCart(product.id),
                         icon: Icon(
-                          isInCart ? Icons.check : Icons.shopping_bag_outlined,
+                          isInCart
+                              ? Icons.check
+                              : Icons.shopping_bag_outlined,
                           color: Colors.white,
                         ),
                         label: Text(
@@ -108,26 +112,31 @@ class ProductDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const Divider(height: 32),
-
                   const Text(
                     'Опис',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     'Професійний засіб преміум-сегменту для щоденного використання. Забезпечує стійкий ефект, глибоке живлення та бездоганний вигляд протягом усього дня. Підходить для всіх типів шкіри.',
-                    style: TextStyle(color: AppColors.grey, fontSize: 14, height: 1.4),
+                    style: TextStyle(
+                        color: AppColors.grey, fontSize: 14, height: 1.4),
                   ),
                   const SizedBox(height: 16),
-
                   const Text(
                     'Характеристики',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark),
                   ),
                   const SizedBox(height: 8),
                   _buildCharacteristicRow('Об\'єм', '50 мл'),
                   _buildCharacteristicRow('Країна виробник', 'Франція'),
-                  _buildCharacteristicRow('Клас косметики', 'Елітнa'),
+                  _buildCharacteristicRow('Клас косметики', 'Елітна'),
                 ],
               ),
             ),
@@ -144,7 +153,9 @@ class ProductDetailScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title, style: const TextStyle(color: AppColors.grey)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark)),
+          Text(value,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: AppColors.textDark)),
         ],
       ),
     );
