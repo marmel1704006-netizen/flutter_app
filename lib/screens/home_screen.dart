@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
@@ -15,15 +16,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'GLOWUP SHOP',
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle.toUpperCase(),
+          style: const TextStyle(
             color: AppColors.textDark,
             fontWeight: FontWeight.bold,
             letterSpacing: 2,
@@ -58,11 +60,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: _buildBody(context, productProvider),
+      body: _buildBody(context, productProvider, l10n),
     );
   }
 
-  Widget _buildBody(BuildContext context, ProductProvider productProvider) {
+  Widget _buildBody(
+      BuildContext context, ProductProvider productProvider, AppLocalizations l10n) {
     switch (productProvider.status) {
       case LoadingStatus.loading:
       case LoadingStatus.initial:
@@ -78,7 +81,7 @@ class HomeScreen extends StatelessWidget {
               const Icon(Icons.wifi_off_outlined, size: 56, color: AppColors.grey),
               const SizedBox(height: 16),
               Text(
-                productProvider.errorMessage ?? 'Щось пішло не так',
+                productProvider.errorMessage ?? l10n.errorGeneric,
                 style: const TextStyle(color: AppColors.grey, fontSize: 15),
                 textAlign: TextAlign.center,
               ),
@@ -92,9 +95,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onPressed: () => productProvider.loadProducts(),
                 icon: const Icon(Icons.refresh, color: Colors.white),
-                label: const Text(
-                  'Спробувати ще раз',
-                  style: TextStyle(color: Colors.white),
+                label: Text(
+                  l10n.tryAgain,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -107,11 +110,11 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildBanner(),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Популярні категорії',
-                  style: TextStyle(
+                  l10n.popularCategories,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
@@ -136,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    _buildSectionGrid(section.products),
+                    _buildSectionGrid(section.products, l10n),
                     const SizedBox(height: 8),
                   ],
                 ),
@@ -205,12 +208,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionGrid(List<Product> products) {
+  Widget _buildSectionGrid(List<Product> products, AppLocalizations l10n) {
     if (products.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(32.0),
-          child: Text('Товарів поки немає'),
+          padding: const EdgeInsets.all(32.0),
+          child: Text(l10n.emptyCategory),
         ),
       );
     }

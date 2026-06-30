@@ -1,0 +1,47 @@
+{
+  "@@locale": "en",
+  "appTitle": "GlowUp Shop",
+  "navHome": "Home",
+  "navCatalog": "Catalog",
+  "navCart": "Cart",
+  "navMore": "More",
+  "searchHint": "Search products...",
+  "popularCategories": "Popular Categories",
+  "allProducts": "All Products",
+  "tryAgain": "Try Again",
+  "errorNetwork": "No network connection. Please try again.",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "emptyCategory": "No products in this category yet",
+  "emptyCart": "Cart is empty",
+  "clearCart": "Clear",
+  "orderTotal": "Order Total",
+  "checkout": "Checkout",
+  "myData": "My Data",
+  "myBonuses": "My Bonuses",
+  "personalCashback": "Personal Cashback",
+  "myPurchases": "My Purchases",
+  "myAddresses": "My Delivery Addresses",
+  "myCards": "My Saved Cards",
+  "wishlist": "Wishlist",
+  "stores": "Stores and Pickup Points",
+  "projects": "Projects",
+  "support": "Services and Support",
+  "aboutCompany": "About GLOWUP",
+  "addToCart": "Add to Cart",
+  "inCart": "In Cart",
+  "description": "Description",
+  "characteristics": "Characteristics",
+  "noResults": "No results found for \"{query}\"",
+  "@noResults": {
+    "placeholders": {
+      "query": {"type": "String"}
+    }
+  },
+  "foundProducts": "Found: {count} products",
+  "@foundProducts": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "popularQueries": "Popular Queries"
+}

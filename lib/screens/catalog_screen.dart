@@ -21,12 +21,6 @@ class CatalogScreen extends StatelessWidget {
             letterSpacing: 1,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: AppColors.textDark),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: ListView.separated(
         itemCount: CatalogData.categories.length,

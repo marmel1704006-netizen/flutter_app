@@ -1,0 +1,47 @@
+{
+  "@@locale": "uk",
+  "appTitle": "GlowUp Shop",
+  "navHome": "Головна",
+  "navCatalog": "Каталог",
+  "navCart": "Кошик",
+  "navMore": "Ще",
+  "searchHint": "Пошук товарів...",
+  "popularCategories": "Популярні категорії",
+  "allProducts": "Всі товари",
+  "tryAgain": "Спробувати ще раз",
+  "errorNetwork": "Немає підключення до мережі. Спробуй ще раз.",
+  "errorGeneric": "Щось пішло не так. Спробуй ще раз.",
+  "emptyCategory": "Товарів у цій категорії поки немає",
+  "emptyCart": "Кошик порожній",
+  "clearCart": "Очистити",
+  "orderTotal": "Сума замовлення",
+  "checkout": "Оформити замовлення",
+  "myData": "Мої дані",
+  "myBonuses": "Мої бонуси",
+  "personalCashback": "Персональний кешбек",
+  "myPurchases": "Мої покупки",
+  "myAddresses": "Мої адреси доставки",
+  "myCards": "Мої збережені картки",
+  "wishlist": "Список бажань",
+  "stores": "Магазини та точки видачі",
+  "projects": "Проєкти",
+  "support": "Сервіси та допомога",
+  "aboutCompany": "Про компанію GLOWUP",
+  "addToCart": "В кошик",
+  "inCart": "В кошику",
+  "description": "Опис",
+  "characteristics": "Характеристики",
+  "noResults": "За запитом \"{query}\" нічого не знайдено",
+  "@noResults": {
+    "placeholders": {
+      "query": {"type": "String"}
+    }
+  },
+  "foundProducts": "Знайдено: {count} товарів",
+  "@foundProducts": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "popularQueries": "Популярні запити"
+}

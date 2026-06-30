@@ -78,6 +78,19 @@ class CatalogData {
       ],
     ),
     CatalogCategory(
+      name: 'Чоловікам',
+      subCategories: [
+        SubCategory(name: 'Чоловіча парфумерія'),
+        SubCategory(name: 'Засоби для гоління'),
+        SubCategory(name: 'Догляд за бородою та вусами'),
+        SubCategory(name: 'Обличчя'),
+        SubCategory(name: 'Волосся'),
+        SubCategory(name: 'Тіло'),
+        SubCategory(name: 'Техніка для догляду'),
+        SubCategory(name: 'Професійний догляд'),
+      ],
+    ),
+    CatalogCategory(
       name: 'Дітям',
       subCategories: [
         SubCategory(name: 'Гігієна та догляд'),
