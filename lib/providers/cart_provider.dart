@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class CartProvider with ChangeNotifier {
-  // Map<productId, quantity> — O(1) пошук + зберігає кількість
   final Map<String, int> _items = {};
 
   Map<String, int> get items => Map.unmodifiable(_items);

@@ -38,7 +38,7 @@ class _MainLayoutState extends State<MainLayout> {
       ],
       child: Builder(
         builder: (context) {
-          // ✅ Builder потрібен щоб мати доступ до провайдерів всередині MultiProvider
+          // провайдери всередині
           final cartCount = context.watch<CartProvider>().totalCount;
 
           return Scaffold(

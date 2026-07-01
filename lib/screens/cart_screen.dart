@@ -121,7 +121,6 @@ class CartScreen extends StatelessWidget {
             ),
           ),
 
-          // Підсумок
           Container(
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
