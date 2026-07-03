@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
+import '../l10n/app_localizations.dart';
 import '../models/catalog/catalog_category.dart';
 
 class SubCategoryScreen extends StatelessWidget {
@@ -9,6 +10,8 @@ class SubCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -45,10 +48,9 @@ class SubCategoryScreen extends StatelessWidget {
               color: AppColors.grey,
             ),
             onTap: () {
-              // Заглушка — в майбутньому перехід на список товарів
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${sub.name} — незабаром'),
+                  content: Text('${sub.name} — ${l10n.tryAgain}'),
                   backgroundColor: AppColors.primary,
                   duration: const Duration(seconds: 1),
                 ),

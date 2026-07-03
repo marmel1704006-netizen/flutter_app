@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
+import '../l10n/app_localizations.dart';
+import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
 import '../providers/wishlist_provider.dart';
 import '../widgets/product_card.dart';
-import '../models/product.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -15,15 +16,17 @@ class MoreScreen extends StatelessWidget {
     final wishlistProvider = Provider.of<WishlistProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
     final favorites = wishlistProvider.getFavorites(productProvider.products);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Ще',
-          style: TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.navMore,
+          style: const TextStyle(
+              color: AppColors.textDark, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(
@@ -31,52 +34,55 @@ class MoreScreen extends StatelessWidget {
         children: [
           Card(
             color: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const CircleAvatar(
                 backgroundColor: Colors.teal,
                 child: Icon(Icons.person, color: Colors.white),
               ),
-              title: const Text('Марія', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: const Text('Мої дані'),
+              title: const Text('Марія',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(l10n.myData),
               trailing: const Icon(Icons.chevron_right),
             ),
           ),
           const SizedBox(height: 12),
 
           _buildMenuSection([
-            _buildMenuItem(Icons.card_giftcard, 'Мої бонуси', null),
-            _buildMenuItem(Icons.percent, 'Персональний кешбек', null),
+            _buildMenuItem(Icons.card_giftcard, l10n.myBonuses, null),
+            _buildMenuItem(Icons.percent, l10n.personalCashback, null),
           ]),
           const SizedBox(height: 12),
 
           _buildMenuSection([
-            _buildMenuItem(Icons.shopping_bag_outlined, 'Мої покупки', null),
-            _buildMenuItem(Icons.location_on_outlined, 'Мої адреси доставки', null),
-            _buildMenuItem(Icons.credit_card_outlined, 'Мої збережені картки', null),
+            _buildMenuItem(Icons.shopping_bag_outlined, l10n.myPurchases, null),
+            _buildMenuItem(Icons.location_on_outlined, l10n.myAddresses, null),
+            _buildMenuItem(Icons.credit_card_outlined, l10n.myCards, null),
             _buildMenuItem(
               Icons.favorite_border,
-              'Список бажань',
+              l10n.wishlist,
               favorites.isNotEmpty ? '${favorites.length} тов.' : null,
               onTap: favorites.isNotEmpty
-                  ? () => _showWishlist(context, favorites)
+                  ? () => _showWishlist(context, favorites, l10n)
                   : null,
             ),
           ]),
           const SizedBox(height: 12),
 
           _buildMenuSection([
-            _buildMenuItem(Icons.storefront, 'Магазини та точки видачі', null),
-            _buildMenuItem(Icons.assignment_outlined, 'Проєкти', null),
-            _buildMenuItem(Icons.chat_bubble_outline, 'Сервіси та допомога', null),
-            _buildMenuItem(Icons.info_outline, 'Про компанію GLOWUP', null),
+            _buildMenuItem(Icons.storefront, l10n.stores, null),
+            _buildMenuItem(Icons.assignment_outlined, l10n.projects, null),
+            _buildMenuItem(Icons.chat_bubble_outline, l10n.support, null),
+            _buildMenuItem(Icons.info_outline, l10n.aboutCompany, null),
           ]),
         ],
       ),
     );
   }
 
-  void _showWishlist(BuildContext context, List<Product> favorites) {
+  void _showWishlist(
+      BuildContext context, List<Product> favorites, AppLocalizations l10n) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -97,7 +103,7 @@ class MoreScreen extends StatelessWidget {
           initialChildSize: 0.7,
           maxChildSize: 0.95,
           builder: (_, controller) => Scaffold(
-            appBar: AppBar(title: const Text('Список бажань')),
+            appBar: AppBar(title: Text(l10n.wishlist)),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: GridView.builder(
@@ -123,7 +129,8 @@ class MoreScreen extends StatelessWidget {
     return Card(
       color: Colors.white,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape:
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(children: items),
     );
   }

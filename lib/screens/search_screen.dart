@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/product_provider.dart';
 import '../widgets/product_card.dart';
@@ -17,6 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Product> _results = [];
   bool _hasSearched = false;
 
+  // ⚠️ Популярні запити — в майбутньому прийдуть з бекенду
   final List<String> _popularQueries = [
     'Крем для обличчя',
     'Помада',
@@ -50,6 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -64,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
           controller: _controller,
           autofocus: true,
           decoration: InputDecoration(
-            hintText: 'Пошук товарів...',
+            hintText: l10n.searchHint,
             hintStyle: const TextStyle(color: AppColors.grey),
             border: InputBorder.none,
             suffixIcon: _controller.text.isNotEmpty
@@ -81,13 +84,13 @@ class _SearchScreenState extends State<SearchScreen> {
           onChanged: (query) => _search(query, productProvider.products),
         ),
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (!_hasSearched) {
-      return _buildPopularQueries();
+      return _buildPopularQueries(l10n);
     }
 
     if (_results.isEmpty) {
@@ -98,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
             const Icon(Icons.search_off, size: 56, color: AppColors.grey),
             const SizedBox(height: 16),
             Text(
-              'За запитом "${_controller.text}" нічого не знайдено',
+              l10n.noResults(_controller.text),
               style: const TextStyle(color: AppColors.grey, fontSize: 15),
               textAlign: TextAlign.center,
             ),
@@ -113,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
-            'Знайдено: ${_results.length} товарів',
+            l10n.foundProducts(_results.length),
             style: const TextStyle(color: AppColors.grey, fontSize: 13),
           ),
         ),
@@ -137,15 +140,15 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildPopularQueries() {
+  Widget _buildPopularQueries(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Популярні запити',
-            style: TextStyle(
+          Text(
+            l10n.popularQueries,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: AppColors.textDark,

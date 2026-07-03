@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
-import '../providers/product_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/cart_provider.dart';
-import '../providers/wishlist_provider.dart';
 import 'home_screen.dart';
 import 'catalog_screen.dart';
 import 'cart_screen.dart';
@@ -28,55 +27,42 @@ class _MainLayoutState extends State<MainLayout> {
       const MoreScreen(),
     ];
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => ProductProvider()..loadProducts(),
-        ),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => WishlistProvider()),
-      ],
-      child: Builder(
-        builder: (context) {
-          // провайдери всередині
-          final cartCount = context.watch<CartProvider>().totalCount;
+    final cartCount = context.watch<CartProvider>().totalCount;
+    final l10n = AppLocalizations.of(context)!;
 
-          return Scaffold(
-            body: screens[_selectedIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              selectedItemColor: AppColors.primary,
-              unselectedItemColor: AppColors.grey,
-              backgroundColor: Colors.white,
-              type: BottomNavigationBarType.fixed,
-              onTap: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              items: [
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
-                  activeIcon: Icon(Icons.home),
-                  label: 'Головна',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: 'Каталог',
-                ),
-                BottomNavigationBarItem(
-                  icon: _buildCartIcon(cartCount, isActive: false),
-                  activeIcon: _buildCartIcon(cartCount, isActive: true),
-                  label: 'Кошик',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.more_horiz),
-                  label: 'Ще',
-                ),
-              ],
-            ),
-          );
+    return Scaffold(
+      body: screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.grey,
+        backgroundColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
         },
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: l10n.navHome,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.search),
+            label: l10n.navCatalog,
+          ),
+          BottomNavigationBarItem(
+            icon: _buildCartIcon(cartCount, isActive: false),
+            activeIcon: _buildCartIcon(cartCount, isActive: true),
+            label: l10n.navCart,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.more_horiz),
+            label: l10n.navMore,
+          ),
+        ],
       ),
     );
   }
@@ -85,9 +71,7 @@ class _MainLayoutState extends State<MainLayout> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Icon(
-          isActive ? Icons.shopping_bag : Icons.shopping_bag_outlined,
-        ),
+        Icon(isActive ? Icons.shopping_bag : Icons.shopping_bag_outlined),
         if (count > 0)
           Positioned(
             top: -6,

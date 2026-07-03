@@ -3,9 +3,7 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
-import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
-import '../providers/wishlist_provider.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/product_card.dart';
 import 'search_screen.dart';
@@ -34,23 +32,11 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: AppColors.textDark),
+            // просто переходимо — провайдери вже глобальні
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(
-                      value: Provider.of<ProductProvider>(context, listen: false),
-                    ),
-                    ChangeNotifierProvider.value(
-                      value: Provider.of<CartProvider>(context, listen: false),
-                    ),
-                    ChangeNotifierProvider.value(
-                      value: Provider.of<WishlistProvider>(context, listen: false),
-                    ),
-                  ],
-                  child: const SearchScreen(),
-                ),
+                builder: (_) => const SearchScreen(),
               ),
             ),
           ),

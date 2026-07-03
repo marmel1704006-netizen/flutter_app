@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/colors.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
 
@@ -13,32 +14,34 @@ class CartScreen extends StatelessWidget {
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
     final cartProducts = cartProvider.getCartProducts(productProvider.products);
     final total = cartProvider.totalPrice(productProvider.products);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Кошик',
-          style: TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.navCart,
+          style: const TextStyle(
+              color: AppColors.textDark, fontWeight: FontWeight.bold),
         ),
         actions: [
           if (cartProducts.isNotEmpty)
             TextButton(
               onPressed: () => cartProvider.clearCart(),
-              child: const Text(
-                'Очистити',
-                style: TextStyle(color: AppColors.grey),
+              child: Text(
+                l10n.clearCart,
+                style: const TextStyle(color: AppColors.grey),
               ),
             ),
         ],
       ),
       body: cartProducts.isEmpty
-          ? const Center(
+          ? Center(
         child: Text(
-          'Кошик порожній',
-          style: TextStyle(color: AppColors.grey, fontSize: 16),
+          l10n.emptyCart,
+          style: const TextStyle(color: AppColors.grey, fontSize: 16),
         ),
       )
           : Column(
@@ -94,12 +97,14 @@ class CartScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Лічильник кількості
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline, size: 20),
-                            onPressed: () => cartProvider.decrementQuantity(product.id),
+                            icon: const Icon(
+                                Icons.remove_circle_outline,
+                                size: 20),
+                            onPressed: () =>
+                                cartProvider.decrementQuantity(product.id),
                           ),
                           Text(
                             '$quantity',
@@ -109,8 +114,10 @@ class CartScreen extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle_outline, size: 20),
-                            onPressed: () => cartProvider.addToCart(product.id),
+                            icon: const Icon(Icons.add_circle_outline,
+                                size: 20),
+                            onPressed: () =>
+                                cartProvider.addToCart(product.id),
                           ),
                         ],
                       ),
@@ -120,22 +127,24 @@ class CartScreen extends StatelessWidget {
               },
             ),
           ),
-
           Container(
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+              BorderRadius.vertical(top: Radius.circular(20)),
             ),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Сума замовлення',
-                        style: TextStyle(color: AppColors.grey)),
+                    Text(l10n.orderTotal,
+                        style:
+                        const TextStyle(color: AppColors.grey)),
                     Text('${total.toStringAsFixed(0)} ₴',
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -144,15 +153,17 @@ class CartScreen extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     onPressed: () {},
-                    child: const Text(
-                      'Оформити замовлення',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: Text(
+                      l10n.checkout,
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),
