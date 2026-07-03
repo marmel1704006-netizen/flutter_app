@@ -5,7 +5,7 @@ import 'l10n/app_localizations.dart';
 import 'providers/product_provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/wishlist_provider.dart';
-import 'screens/main_layout.dart';
+import 'screens/splash_screen.dart';
 import 'constants/colors.dart';
 
 void main() {
@@ -15,7 +15,7 @@ void main() {
 class GlowUpApp extends StatelessWidget {
   const GlowUpApp({super.key});
 
-  // статичні інстанси — створюються один раз і живуть весь час
+  // статичні інстанси
   static final _productProvider = ProductProvider()..loadProducts();
   static final _cartProvider = CartProvider();
   static final _wishlistProvider = WishlistProvider();
@@ -45,7 +45,7 @@ class GlowUpApp extends StatelessWidget {
           Locale('uk'),
           Locale('en'),
         ],
-        home: const MainLayout(),
+        home: const SplashScreen(),
       ),
     );
   }

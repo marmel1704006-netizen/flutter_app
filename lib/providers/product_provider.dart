@@ -18,7 +18,6 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> get products => _products;
   List<ProductCategory> get categories => _categories;
-  List<ProductSection> get sections => _sections;
   int get selectedCategoryId => _selectedCategoryId;
   LoadingStatus get status => _status;
   String? get errorMessage => _errorMessage;
@@ -26,6 +25,24 @@ class ProductProvider with ChangeNotifier {
   List<Product> get filteredProducts {
     if (_selectedCategoryId == 0) return _products;
     return _products.where((p) => p.categoryId == _selectedCategoryId).toList();
+  }
+
+  // секції фільтруються разом з категорією
+  List<ProductSection> get sections {
+    if (_selectedCategoryId == 0) return _sections;
+
+    // фільтрація товарів в кожній секції
+    final filtered = _sections
+        .map((section) => ProductSection(
+      title: section.title,
+      products: section.products
+          .where((p) => p.categoryId == _selectedCategoryId)
+          .toList(),
+    ))
+        .where((section) => section.products.isNotEmpty)
+        .toList();
+
+    return filtered;
   }
 
   Future<void> loadProducts() async {

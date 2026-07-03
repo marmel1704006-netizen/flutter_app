@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: AppColors.textDark),
-            // просто переходимо — провайдери вже глобальні
+            // на серч скрін
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
