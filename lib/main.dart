@@ -15,8 +15,8 @@ void main() {
 class GlowUpApp extends StatelessWidget {
   const GlowUpApp({super.key});
 
-  // статичні інстанси
-  static final _productProvider = ProductProvider()..loadProducts();
+  // Створюємо інстанси але НЕ завантажуємо товари тут
+  static final _productProvider = ProductProvider();
   static final _cartProvider = CartProvider();
   static final _wishlistProvider = WishlistProvider();
 

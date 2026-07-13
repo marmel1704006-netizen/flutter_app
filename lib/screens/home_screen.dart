@@ -8,8 +8,23 @@ import '../widgets/category_chip.dart';
 import '../widgets/product_card.dart';
 import 'search_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Завантажуємо товари коли екран вперше відображається
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<ProductProvider>().loadProducts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +47,6 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: AppColors.textDark),
-            // на серч скрін
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -51,7 +65,9 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBody(
-      BuildContext context, ProductProvider productProvider, AppLocalizations l10n) {
+      BuildContext context,
+      ProductProvider productProvider,
+      AppLocalizations l10n) {
     switch (productProvider.status) {
       case LoadingStatus.loading:
       case LoadingStatus.initial:
