@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../providers/notification_provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/product_card.dart';
+import 'notifications_screen.dart';
 import 'search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Завантажуємо товари коли екран вперше відображається
     Future.microtask(() {
       if (!mounted) return;
       context.read<ProductProvider>().loadProducts();
@@ -49,14 +50,54 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.search, color: AppColors.textDark),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => const SearchScreen(),
-              ),
+              MaterialPageRoute(builder: (_) => const SearchScreen()),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: AppColors.textDark),
-            onPressed: () {},
+          // ✅ Дзвіночок з бейджем
+          Consumer<NotificationProvider>(
+            builder: (context, notifProvider, _) {
+              return Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      color: AppColors.textDark,
+                    ),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const NotificationsScreen(),
+                      ),
+                    ),
+                  ),
+                  if (notifProvider.unreadCount > 0)
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 16,
+                          minHeight: 16,
+                        ),
+                        child: Text(
+                          '${notifProvider.unreadCount}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -179,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Align(
           alignment: Alignment.bottomLeft,
           child: Text(
-            'Б\'ЮТІ СЕЗОН\nЗнижки до -30%',
+            'BEAUTY SEASON\nDiscount up to -30%',
             style: TextStyle(
               color: Colors.white,
               fontSize: 22,

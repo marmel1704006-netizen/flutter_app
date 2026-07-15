@@ -5,6 +5,7 @@ import 'l10n/app_localizations.dart';
 import 'providers/product_provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/wishlist_provider.dart';
+import 'providers/notification_provider.dart';
 import 'screens/splash_screen.dart';
 import 'constants/colors.dart';
 
@@ -15,10 +16,10 @@ void main() {
 class GlowUpApp extends StatelessWidget {
   const GlowUpApp({super.key});
 
-  // Створюємо інстанси але НЕ завантажуємо товари тут
   static final _productProvider = ProductProvider();
   static final _cartProvider = CartProvider();
   static final _wishlistProvider = WishlistProvider();
+  static final _notificationProvider = NotificationProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class GlowUpApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: _productProvider),
         ChangeNotifierProvider.value(value: _cartProvider),
         ChangeNotifierProvider.value(value: _wishlistProvider),
+        ChangeNotifierProvider.value(value: _notificationProvider),
       ],
       child: MaterialApp(
         title: 'GlowUp Shop',
